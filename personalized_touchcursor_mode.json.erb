@@ -1,0 +1,101 @@
+<%# ---------------------------------------------------------------------%>
+<%# A much simplified copy of the vi_mode.json.erb file, for TouchCursor %>
+<%# ---------------------------------------------------------------------%>
+{
+    "title": “Personalized TouchCursor Mode",
+    "rules": [
+        {
+            "description": "TouchCursor Mode [Space as Trigger Key]",
+            "manipulators": [
+
+                <%# -------------------------------------------------- %>
+                <%# press spacebar to enter TouchCursor Mode, release to quit %>
+                <%# -------------------------------------------------- %>
+                {
+                    "type": "basic",
+                    "from": <%= from("caps_lock", [], ["caps_lock"]) %>,
+                    "to": [
+                        { "set_variable": { "name": "touchcursor_mode", "value": 1 } }
+                    ],
+                    "to_if_alone": <%= to([["spacebar"]]) %>,
+                    "to_after_key_up": [
+                        { "set_variable": { "name": "touchcursor_mode", "value": 0 } }
+                    ]
+                },
+
+                <%# -------------------------------------------------- %>
+                <%# change j/k/i/l to arrow keys %>
+                <%# -------------------------------------------------- %>
+                {
+                    "type": "basic",
+                    "from": <%= from("j", [], ["any"]) %>,
+                    "to": <%= to([["left_arrow"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from("k", [], ["any"]) %>,
+                    "to": <%= to([["down_arrow"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from("i", [], ["any"]) %>,
+                    "to": <%= to([["up_arrow"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from("l", [], ["any"]) %>,
+                    "to": <%= to([["right_arrow"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+
+                <%# -------------------------------------------------- %>
+                <%# change u/o to Home/End, y to Insert, and %>
+                <%# m/p to delete_forward/delete_or_backspace %>
+                <%# -------------------------------------------------- %>
+                {
+                    "type": "basic",
+                    "from": <%= from(“h”, [], ["any"]) %>,
+                    "to": <%= to([["home"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from(“semicolon”, [], ["any"]) %>,
+                    "to": <%= to([["end"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from(“,”, [], ["any"]) %>,
+                    "to": <%= to([["delete_forward"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": <%= from(“m”, [], ["any"]) %>,
+                    "to": <%= to([["delete_or_backspace"]]) %>,
+                    "conditions": [
+                        { "type": "variable_if", "name": "touchcursor_mode", "value": 1 }
+                    ]
+                }
+            ]
+        }
+    ]
+}
